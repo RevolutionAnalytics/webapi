@@ -1,0 +1,9 @@
+Package: webapi
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.0.0
+Date: 2015-05-21
+Author: Revolution Analytics
+Description: More about what it does (maybe more than one line)
+License: Apache (== 2.0)
+Imports:httr, jsonlite
