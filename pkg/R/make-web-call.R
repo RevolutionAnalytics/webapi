@@ -15,7 +15,7 @@ function(vec, vals){
 
 qw = function(x) strsplit(x = x, split = " +")[[1]]
 
-make.rest.call =
+make.web.call =
 function(
   .method =
     qw("get post put browse delete head"),
@@ -25,7 +25,7 @@ function(
   .body,
   .body.encoding = "json") {
   .method = match.fun(toupper(match.arg(.method)))
-  rest.call = function() {
+  web.call = function() {
     args = arglist()
     req =
       .method(
@@ -35,6 +35,6 @@ function(
         body = arg.filler(.body, args),
         encode = .body.encoding)
     content(req)}
-  formals(rest.call) = c(.parameters, .headers, .body)
-  rest.call}
+  formals(web.call) = c(.parameters, .headers, .body)
+  web.call}
 
