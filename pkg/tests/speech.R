@@ -1,4 +1,5 @@
 library(uuid)
+library(functional)
 
 voice.recognition =
   make.web.call(
