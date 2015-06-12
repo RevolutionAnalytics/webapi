@@ -23,19 +23,17 @@ arglist =
 arg.filler =
   function(spec, vals){
     discard(
-      lapply(
-        names(spec),
-        function(n) {
-          sn = spec[[n]]
-          vn = vals[[n]]
-          if(is.null(vn))
-            sn$conversion(sn$default)
-          else {
-            switch (
-              length(formals(sn$conversion)),
-              sn$conversion(vn),
-              sn$conversion(vn, sn$default),
-              stop("Conversion function can accept one or two arguments"))}}),
+      setNames(
+        lapply(
+          names(spec),
+          function(n) {
+            sn = spec[[n]]
+            vn = vals[[n]]
+            if(is.null(vn))
+              sn$conversion(sn$default)
+            else
+              sn$conversion(vn)}),
+        names(spec)),
       is.null)}
 
 format.content.type =
