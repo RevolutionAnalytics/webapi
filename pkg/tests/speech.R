@@ -30,8 +30,8 @@ voice.recognition =
             conversion = Curry(match.arg, choices = default)),
         instanceid	= a(export = NULL),
         maxnbest = a(default = 1),
-    .body = list(audio.data = a(mandatory = TRUE)),
         result.profanitymarkup = a(default = TRUE, conversion = as.integer)),
+    .body = list(audio.data = a(mandatory = TRUE, conversion = identity)),
     .body.encoding = "multipart",
     .body.conversion = function(x) x$audio.data,
     .init =
