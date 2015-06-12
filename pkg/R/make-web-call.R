@@ -63,7 +63,7 @@ make.web.call =
     .body.encoding = c("json", "form", "multipart"),
     .body.conversion = identity,
     .init = identity) {
-    .method = match.fun(toupper(match.arg(.method)))
+    .method = get(toupper(match.arg(.method)), envir = environment(httr::POST))
     .param.encoding = match.arg(.param.encoding)
     .parameters = applyval(.parameters, parent.frame())
     .headers = applyval(.headers, parent.frame())
