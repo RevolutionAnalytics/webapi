@@ -7,4 +7,4 @@ Author: Revolution Analytics
 Description: More about what it does (maybe more than one line)
 License: Apache (== 2.0)
 Imports:httr, jsonlite, purrr
-Collate: util.R make-web-call.R
+Collate: make-web-call.R
