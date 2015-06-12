@@ -73,6 +73,7 @@ make.web.call =
     names(formal.args) = sapply(names(formal.args), function(n) formal.args[[n]]$export(n))
     .web.call = function() {
       args = arglist()
+      args = lapply(args, eval, envir = parent.frame())
       args = .init(args)
       if(.param.encoding == "path") {
         .url =
@@ -84,9 +85,9 @@ make.web.call =
           url = .url,
           query =
             if(.param.encoding == "query")
-              as.list(arg.filler(.parameters, args)),
-          add_headers(arg.filler(.headers, args)),
-          body = .body.conversion(as.list(arg.filler(.body, args))),
+              arg.filler(.parameters, args),
+          add_headers(unlist(arg.filler(.headers, args))),
+          body = .body.conversion(arg.filler(.body, args)),
           encode = .body.encoding)
       content(req)}
     formals(.web.call) =
