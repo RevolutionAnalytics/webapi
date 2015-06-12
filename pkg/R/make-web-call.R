@@ -60,7 +60,7 @@ make.web.call =
     .param.encoding = c("query", "path"),
     .headers,
     .body,
-    .body.encoding = "json",
+    .body.encoding = c("json", "form", "multipart"),
     .body.conversion = identity,
     .init = identity) {
     .method = match.fun(toupper(match.arg(.method)))
