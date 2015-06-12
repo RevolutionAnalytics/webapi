@@ -24,7 +24,10 @@ voice.recognition =
         format	= a(default = "JSON", export = NULL),
         locale = a(default = "en-US"),
         device.os = a(default = "SomeOS", export = NULL),
-        scenarios	= a(c("ulm", "websearch"), process = match.arg),
+        scenarios	=
+          a(
+            default = c("ulm", "websearch"),
+            conversion = Curry(match.arg, choices = default)),
         instanceid	= a(export = NULL),
         maxnbest = a(default = 1),
         result.profanitymarkup = a(default = TRUE, process = as.integer)),
