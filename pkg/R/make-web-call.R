@@ -40,7 +40,6 @@ arg.filler =
 
 format.content.type =
   function(content.type) {
-    content.type = eval.formula(content.type)
     gsub(
       pattern = "^=",
       replacement = "",
