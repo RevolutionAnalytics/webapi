@@ -47,7 +47,7 @@ format.content.type =
 
 applyval =
   function(ll, frame)
-  lapply(ll, function(x) lapply(x, eval, envir = x, enclos = frame))
+    lapply(ll, function(x) lapply(x, eval, envir = x, enclos = frame))
 
 path.encoding =
   function(arglist)
