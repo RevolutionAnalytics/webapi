@@ -38,7 +38,7 @@ detect.faces =
         c(
           args,
           list(
-            `Content-type` =
+            `Content-Type` =
               if(is.null(url))
                 "application/octet-stream"
             else
