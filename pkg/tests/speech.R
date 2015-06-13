@@ -19,7 +19,7 @@ voice.recognition =
             conversion = format.content.type)),
     .parameters =
       list(
-        Version = a(default = "3.0", export = NULL),
+        version = a(default = "3.0", export = NULL),
         requestid	= a(export = NULL),
         appID = a(default = "D4D52672-91D7-4C74-8AD8-42B1D98141A5", export = NULL),
         format	= a(default = "JSON", export = NULL),
