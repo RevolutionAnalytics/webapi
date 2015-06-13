@@ -22,19 +22,21 @@ arglist =
 
 arg.filler =
   function(spec, vals){
-    discard(
-      setNames(
-        lapply(
-          names(spec),
-          function(n) {
-            sn = spec[[n]]
-            vn = vals[[n]]
-            if(is.null(vn))
-              sn$conversion(sn$default)
-            else
-              sn$conversion(vn)}),
-        names(spec)),
-      is.null)}
+    filled =
+      discard(
+        setNames(
+          lapply(
+            names(spec),
+            function(n) {
+              sn = spec[[n]]
+              vn = vals[[n]]
+              if(is.null(vn))
+                sn$conversion(sn$default)
+              else
+                sn$conversion(vn)}),
+          names(spec)),
+        is.null)
+    if(length(filled) == 0) NULL else filled}
 
 format.content.type =
   function(content.type) {
