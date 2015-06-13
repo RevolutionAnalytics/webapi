@@ -7,7 +7,7 @@ voice.recognition =
     .url = "https://speech.platform.bing.com/recognize",
     .headers =
       list(
-        `Content-type` =
+        `Content-Type` =
           a(
             default =
               list(
