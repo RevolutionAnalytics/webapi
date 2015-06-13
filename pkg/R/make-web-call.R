@@ -43,7 +43,7 @@ format.content.type =
     gsub(
       pattern = "^=",
       replacement = "",
-      x = paste(names(content.type), content.type, sep = "=", collapse = ";"))}
+      x = paste(names(content.type), tolower(content.type), sep = "=", collapse = ";"))}
 
 applyval =
   function(ll, frame)
