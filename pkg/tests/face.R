@@ -20,9 +20,8 @@ detect.faces =
         analyzesHeadPose = a(default = FALSE, conversion = tolower)),
     .headers =
       list(
-        `Content-type` = a(export = NULL),
-        `Ocp-Apim-Subscription-Key` =
-          a(mandatory = TRUE)),
+        `Content-Type` = a(export = NULL),
+        `Ocp-Apim-Subscription-Key` = a(mandatory = TRUE)),
     .body =
       list(
         url = a(),
