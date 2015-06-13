@@ -91,7 +91,7 @@ make.web.call =
           add_headers(unlist(arg.filler(.headers, args))),
           body = .body.conversion(arg.filler(.body, args)),
           encode = .body.encoding)
-      content(req)}
+      content(req, "text")}
     formals(.web.call) =
       lapply(
         formal.args,
