@@ -8,6 +8,11 @@
 library(functional)
 base.url = "http://api.projectoxford.ai/face/v0"
 
+face.headers =
+  list(
+    `Content-Type` =  a(default = "application/json", export = NULL),
+    `Ocp-Apim-Subscription-Key` = a(mandatory = TRUE))
+
 detect.faces =
   make.web.call(
     .method = "post",
@@ -45,10 +50,7 @@ find.similar.faces =
     .method = "post",
     .url = paste(sep = "/", base.url, "findsimilars"),
     .parameters = list(),
-    .headers =
-      list(
-        `Content-Type` =  a(default = "application/json", export = NULL),
-        `Ocp-Apim-Subscription-Key` = a(mandatory = TRUE),
+    .headers = face.headers,
     .body =
       list(
         faceId = a(mandatory = TRUE),
@@ -59,10 +61,7 @@ group.faces =
     .method = "post",
     .url = paste(sep = "/", base.url, "groupings"),
     .parameters = list(),
-    .headers =
-      list(
-        `Content-type` = a(default = "application/json", export = NULL),
-        `Ocp-Apim-Subscription-Key` = a(mandatory = TRUE)),
+    .headers = face.headers,
     .body = list(faceIds = a(mandatory = TRUE)))
 
 identify.faces =
@@ -70,10 +69,7 @@ identify.faces =
     .method = "post",
     .url = paste(sep = "/", base.url, "identifications"),
     .parameters = list(),
-    .headers =
-      list(
-        `Content.type` = a(default = "application/json", export = NULL),
-        `Ocp-Apim-Subscription-Key` = a(mandatory = TRUE)),
+    .headers = face.headers,
     .body =
       list(
         faceIds = a(mandatory = TRUE),
@@ -85,10 +81,7 @@ verify.faces =
     .method = "post",
     .url = paste(sep = "/", base.url, "verifications"),
     .parameters = list(),
-    .headers =
-      list(
-        `Content.type` = a(default = "application/json"),
-        `Ocp-Apim-Subscription-Key` = a(mandatory = TRUE)),
+    .headers = face.headers,
     .body =
       list(
         faceId1 = a(mandatory = TRUE),
