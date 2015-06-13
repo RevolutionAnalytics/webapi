@@ -6,6 +6,7 @@
 #indirect arguments may speficy binary argument with file-name
 
 library(functional)
+library(jsonlite)
 base.url = "http://api.projectoxford.ai/face/v0"
 
 face.headers =
@@ -54,7 +55,8 @@ find.similar.faces =
     .body =
       list(
         faceId = a(mandatory = TRUE),
-        faceIds = a(mandatory = TRUE))))
+        faceIds = a(mandatory = TRUE)),
+    .body.conversion = Curry(toJSON, auto_unbox = TRUE))
 
 group.faces =
   make.web.call(
@@ -74,7 +76,8 @@ identify.faces =
       list(
         faceIds = a(mandatory = TRUE),
         personGroupId = a(mandatory = TRUE),
-        maxNumOfCandidatesReturned = a(default = 1)))
+        maxNumOfCandidatesReturned = a(default = 1)),
+    .body.conversion = Curry(toJSON, auto_unbox = TRUE))
 
 verify.faces =
   make.web.call(
@@ -85,4 +88,5 @@ verify.faces =
     .body =
       list(
         faceId1 = a(mandatory = TRUE),
-        faceId2 = a(mandatory = TRUE)))
+        faceId2 = a(mandatory = TRUE)),
+    .body.conversion = Curry(toJSON, auto_unbox = TRUE))
