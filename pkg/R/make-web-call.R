@@ -56,7 +56,7 @@ path.encoding =
 make.web.call =
   function(
     .method =
-      c("get", "post", "put", "browse", "delete", "head"),
+      c("get", "patch", "post", "put", "delete", "head"),
     .url,
     .parameters,
     .param.encoding = c("query", "path"),
