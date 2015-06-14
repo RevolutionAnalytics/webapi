@@ -7,7 +7,7 @@ Generate a R function call from a detailed description of a web API entry point.
 Mapping R calls to web API is a repetitive and error prone task. By using this function instead you take advantage an automatic, uniform and tested mapping between a web entry point and an R function call.
 }
 \usage{
-make.web.call(.method = c("get", "post", "put", "browse", "delete", "head"), .url, .parameters, .param.encoding = c("query", "path"), .headers, .body, .body.encoding = c("json", "form", "multipart"), .body.conversion = identity, .init = identity)
+make.web.call(.method = c("get", "post", "put", "browse", "delete", "head"), .url, .parameters, .param.encoding = c("query", "path"), .headers, .body, .body.encoding = c("json", "form", "multipart"), .init = identity)
 }
 \arguments{
   \item{.method}{
@@ -26,13 +26,9 @@ The url for the API endpoint (can be extended in some instances by using other o
   List of API header specs, created  with the function \code{arg.spec} or \code{a} for short.
 }
   \item{.body}{
-  List of API body specs, created  with the function \code{arg.spec} or \code{a} for short.
+  List of API body specs, created  with the function \code{arg.spec} or \code{a} for short. Use \code{httr::upload_file} as a value to upload a file.
 }
-  \item{.body.encoding}{
-How the body of the function is encoded
-}
-  \item{.body.conversion}{
-Conversion to apply to the list of body arguments.
+  \item{.body.encoding}{How the body of the function is encoded. If one of "json", "multipart" or "form" and if \code{.body} is a named list, the corresponding encoding is used. If a function, that function will be used to encode \code{.body} Use "multipart" to upload a file.
 }
   \item{.init}{
 Transformation to apply to list of all arguments of the generated call, for instance late initialization or verifying contstraints. Returns the list of arguments.

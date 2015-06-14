@@ -35,8 +35,7 @@ voice.recognition =
         client_secret = a(mandatory = TRUE),
         client_id = a(default = 111111)),
     .body = list(audio.data = a(mandatory = TRUE, conversion = identity)),
-    .body.encoding = "multipart",
-    .body.conversion = function(x) x$audio.data,
+    .body.encoding = function(x) x$audio.data,
     .init =
       function(args) {
         args$requestid = UUIDgenerate()

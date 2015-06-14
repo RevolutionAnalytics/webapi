@@ -44,7 +44,7 @@ detect.faces =
                 "application/octet-stream"
             else
               "application/json"))},
-    .body.conversion = Curry(toJSON, auto_unbox = TRUE))
+    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
 
 find.similar.faces =
   make.web.call(
@@ -56,7 +56,7 @@ find.similar.faces =
       list(
         faceId = a(mandatory = TRUE),
         faceIds = a(mandatory = TRUE)),
-    .body.conversion = Curry(toJSON, auto_unbox = TRUE))
+    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
 
 group.faces =
   make.web.call(
@@ -77,7 +77,7 @@ identify.faces =
         faceIds = a(mandatory = TRUE),
         personGroupId = a(mandatory = TRUE),
         maxNumOfCandidatesReturned = a(default = 1)),
-    .body.conversion = Curry(toJSON, auto_unbox = TRUE))
+    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
 
 verify.faces =
   make.web.call(
@@ -89,4 +89,4 @@ verify.faces =
       list(
         faceId1 = a(mandatory = TRUE),
         faceId2 = a(mandatory = TRUE)),
-    .body.conversion = Curry(toJSON, auto_unbox = TRUE))
+    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
