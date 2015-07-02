@@ -58,10 +58,10 @@ make.web.call =
     .method =
       c("get", "patch", "post", "put", "delete", "head"),
     .url,
-    .parameters,
+    .parameters  = NULL,
     .param.encoding = c("query", "path"),
-    .headers,
-    .body,
+    .headers = NULL,
+    .body = NULL,
     .body.encoding = c("json", "form", "multipart"),
     .response.encoding = c("parsed", "text", "raw"),
     .init = identity) {
