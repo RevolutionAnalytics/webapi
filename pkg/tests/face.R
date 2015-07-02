@@ -7,6 +7,8 @@
 
 library(functional)
 library(jsonlite)
+library(purrr)
+
 base.url = "https://api.projectoxford.ai/face/v0"
 
 face.headers =
@@ -41,7 +43,9 @@ detect.faces =
                 "application/octet-stream"
             else
               "application/json"))},
-    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
+    .body.encoding =
+      function(x)
+        toJSON(discard(x, ~length(.) == 0), auto_unbox = TRUE))
 
 find.similar.faces =
   make.web.call(
