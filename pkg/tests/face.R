@@ -24,10 +24,7 @@ detect.faces =
         analyzesAge = a(default = FALSE, conversion = tolower),
         analyzesGender = a(default = FALSE, conversion = tolower),
         analyzesHeadPose = a(default = FALSE, conversion = tolower)),
-    .headers =
-      list(
-        `Content-Type` = a(export = NULL),
-        `Ocp-Apim-Subscription-Key` = a(mandatory = TRUE)),
+    .headers = face.headers,
     .body =
       list(
         url = a(),
