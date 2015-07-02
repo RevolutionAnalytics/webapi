@@ -7,7 +7,7 @@
 
 library(functional)
 library(jsonlite)
-base.url = "http://api.projectoxford.ai/face/v0"
+base.url = "https://api.projectoxford.ai/face/v0"
 
 face.headers =
   list(
