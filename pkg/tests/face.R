@@ -11,12 +11,21 @@ library(purrr)
 
 base.url = "https://api.projectoxford.ai/face/v0"
 
-face.headers =
-  list(
-    `Content-Type` =  a(default = "application/json", export = NULL),
-    `Ocp-Apim-Subscription-Key` = a(mandatory = TRUE))
+subkey = list(`Ocp-Apim-Subscription-Key` = a(mandatory = TRUE))
+ctype =   list(`Content-Type` =  a(default = "application/json", export = NULL))
+face.headers = c(ctype, subkey)
+faceIds = list(faceIds = a(mandatory = TRUE))
 
-detect.faces =
+#face
+#
+
+make.web.call.face =
+  Curry(
+    make.web.call,
+    .headers = face.headers,
+    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
+
+detect =
   make.web.call(
     .method = "post",
     .url = paste(sep = "/", base.url, "detections"),
@@ -27,14 +36,11 @@ detect.faces =
         analyzesGender = a(default = FALSE, conversion = tolower),
         analyzesHeadPose = a(default = FALSE, conversion = tolower)),
     .headers = face.headers,
-    .body =
-      list(
-        url = a(),
-        image.data = a()),
+    .body = list(url = a(), image.data = a()),
     .init =
       function(args) {
-         if(is.null(args$url) == is.null(args$image.data))
-           stop("Specify exactly one of url and image.data")
+        if(is.null(args$url) == is.null(args$image.data))
+          stop("Specify exactly one of url and image.data")
         c(
           args,
           list(
@@ -47,47 +53,108 @@ detect.faces =
       function(x)
         toJSON(discard(x, ~length(.) == 0), auto_unbox = TRUE))
 
-find.similar.faces =
-  make.web.call(
+find.similar =
+  make.web.call.face(
     .method = "post",
     .url = paste(sep = "/", base.url, "findsimilars"),
-    .parameters = list(),
-    .headers = face.headers,
-    .body =
-      list(
-        faceId = a(mandatory = TRUE),
-        faceIds = a(mandatory = TRUE)),
-    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
+    .body = c(list(faceId = a(mandatory = TRUE)), faceIds))
 
-group.faces =
-  make.web.call(
+group =
+  make.web.call.face(
     .method = "post",
     .url = paste(sep = "/", base.url, "groupings"),
-    .parameters = list(),
-    .headers = face.headers,
-    .body = list(faceIds = a(mandatory = TRUE)))
+    .body = faceIds)
 
-identify.faces =
-  make.web.call(
+identify =
+  make.web.call.face(
     .method = "post",
     .url = paste(sep = "/", base.url, "identifications"),
-    .parameters = list(),
-    .headers = face.headers,
     .body =
-      list(
-        faceIds = a(mandatory = TRUE),
-        personGroupId = a(mandatory = TRUE),
-        maxNumOfCandidatesReturned = a(default = 1)),
-    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
+      c(
+        faceIds,
+        list(
+          personGroupId = a(mandatory = TRUE),
+          maxNumOfCandidatesReturned = a(default = 1))))
 
-verify.faces =
-  make.web.call(
+verify =
+  make.web.call.face(
     .method = "post",
     .url = paste(sep = "/", base.url, "verifications"),
-    .parameters = list(),
-    .headers = face.headers,
     .body =
       list(
         faceId1 = a(mandatory = TRUE),
-        faceId2 = a(mandatory = TRUE)),
-    .body.encoding = Curry(toJSON, auto_unbox = TRUE))
+        faceId2 = a(mandatory = TRUE)))
+
+## person
+
+persongroups = list(persongroups = a(mandatory = TRUE))
+persons = list(persons = a(mandatory = TRUE))
+faces = list(faces = a(mandatory = TRUE))
+persons.empty = list(persons = a(default = "", export = NULL))
+name = list(name = a(mandatory = TRUE))
+userData = list(userData = a(default = ""))
+
+
+make.web.call.person.body =
+  Curry(
+    make.web.call,
+    .url = base.url,
+    .headers = face.headers,
+    .param.encoding = "path",
+    .body.encoding =  Curry(toJSON, auto_unbox = TRUE))
+
+make.web.call.person.no.body =
+  Curry(
+    make.web.call,
+    .url = base.url,
+    .headers = subkey,
+    .param.encoding = "path")
+
+add.person.face =
+  make.web.call.person.body(
+    .method = "put",
+    .parameters = c(persongroups, persons, faces),
+    .body = userData)
+
+create.person =
+  make.web.call.person.body(
+    .method = "post",
+    .parameters = c(persongroups, persons.empty),
+    .body = c(faceIds, name, userData))
+
+delete.person =
+  make.web.call.person.no.body(
+    .method = "delete",
+    .parameters = c(persongroups, persons))
+
+delete.person.face =
+  make.web.call.person.no.body(
+    .method = "delete",
+    .parameters = c(persongroups, persons, faces))
+
+get.person =
+  make.web.call.person.no.body(
+    .method = "get",
+    .parameters = c(persongroups, persons))
+
+get.person.face =
+  make.web.call.person.no.body(
+    .method = "get",
+    .parameters = c(persongroups, persons, faces))
+
+list.persons =
+  make.web.call.person.no.body(
+    .method = "get",
+    .parameters = c(persongroups, persons.empty))
+
+update.person =
+  make.web.call.person.body(
+    .method = "patch",
+    .parameters = c(persongroups, persons),
+    .body = c(faceIds, name, userData))
+
+update.person.face =
+  make.web.call.person.body(
+    .method = "patch",
+    .parameters = c(persongroups, persons, faces),
+    .body = c(faceIds, name, userData))
