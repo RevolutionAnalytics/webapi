@@ -11,7 +11,10 @@ library(purrr)
 
 base.url = "https://api.projectoxford.ai/face/v0"
 
-subkey = list(`Ocp-Apim-Subscription-Key` = a(mandatory = TRUE))
+subkey =
+  list(
+    `Ocp-Apim-Subscription-Key` =
+      a(mandatory = TRUE, export = "subscriptionKey"))
 ctype =   list(`Content-Type` =  a(default = "application/json", export = NULL))
 face.headers = c(ctype, subkey)
 faceIds = list(faceIds = a(mandatory = TRUE))
@@ -87,9 +90,9 @@ verify =
 
 ## person
 
-persongroups = list(persongroups = a(mandatory = TRUE))
-persons = list(persons = a(mandatory = TRUE))
-faces = list(faces = a(mandatory = TRUE))
+persongroups = list(persongroups = a(mandatory = TRUE, export = "personGroupId"))
+persons = list(persons = a(mandatory = TRUE, export = "personId"))
+faces = list(faces = a(mandatory = TRUE, export = "faceId"))
 fake.arg = a(default = "", export = NULL)
 persons.empty = list(persons = fake.arg)
 name = list(name = a(mandatory = TRUE))

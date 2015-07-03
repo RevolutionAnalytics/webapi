@@ -29,7 +29,10 @@ arg.filler =
             names(spec),
             function(n) {
               sn = spec[[n]]
-              vn = vals[[n]]
+              vn = {
+                if(is.null(sn$export)) NULL
+                else
+                  vals[[if (is.character(sn$export)) sn$export else sn$export(n)]]}
               if(is.null(vn))
                 sn$conversion(sn$default)
               else
@@ -78,7 +81,15 @@ make.web.call =
     .headers = applyval(.headers, parent.frame())
     .body = applyval(.body, parent.frame())
     formal.args = discard(c(.parameters, .headers, .body), ~is.null(.$export))
-    names(formal.args) = sapply(names(formal.args), function(n) formal.args[[n]]$export(n))
+    names(formal.args) =
+      sapply(
+        names(formal.args),
+        function(n) {
+          export = formal.args[[n]]$export
+          if(is.character(export))
+             export
+          else
+            export(n)})
     .web.call = function() {
       args = arglist()
       args = lapply(args, eval, envir = parent.frame())
