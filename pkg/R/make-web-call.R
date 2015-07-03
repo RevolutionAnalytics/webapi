@@ -29,14 +29,19 @@ arg.filler =
             names(spec),
             function(n) {
               sn = spec[[n]]
+              n1 = {
+                if(is.null(sn$export))
+                  n
+                else {
+                  if (is.character(sn$export))
+                    sn$export
+                  else
+                    sn$export(n)}}
               vn = {
-                if(is.null(sn$export)) NULL
+                if(is.null(vals[[n1]]))
+                  sn$conversion(sn$default)
                 else
-                  vals[[if (is.character(sn$export)) sn$export else sn$export(n)]]}
-              if(is.null(vn))
-                sn$conversion(sn$default)
-              else
-                sn$conversion(vn)}),
+                  sn$conversion(vals[[n1]])}}),
           names(spec)),
         is.null)
     if(length(filled) == 0) NULL else filled}
@@ -87,7 +92,7 @@ make.web.call =
         function(n) {
           export = formal.args[[n]]$export
           if(is.character(export))
-             export
+            export
           else
             export(n)})
     .web.call = function() {
