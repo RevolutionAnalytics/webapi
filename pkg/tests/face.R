@@ -90,9 +90,10 @@ verify =
 persongroups = list(persongroups = a(mandatory = TRUE))
 persons = list(persons = a(mandatory = TRUE))
 faces = list(faces = a(mandatory = TRUE))
-persons.empty = list(persons = a(default = "", export = NULL))
+fake.arg = a(default = "", export = NULL)
+persons.empty = list(persons = fake.arg)
 name = list(name = a(mandatory = TRUE))
-userData = list(userData = a(default = ""))
+userData = list(userData = a(default = "", conversion = toJSON))
 
 
 make.web.call.person.body =
@@ -157,4 +158,44 @@ update.person.face =
   make.web.call.person.body(
     .method = "patch",
     .parameters = c(persongroups, persons, faces),
-    .body = c(faceIds, name, userData))
+    .body = userData)
+
+## persongroup
+##
+
+create.person.group =
+  make.web.call.person.body(
+    .method = "put",
+    .parameters = persongroups,
+    .body = c(name, userData))
+
+delete.person.group =
+  make.web.call.person.no.body(
+    .method = "delete",
+    .parameters = persongroups)
+
+get.person.group =
+  make.web.call.person.no.body(
+    .method = "get",
+    .parameters = persongroups)
+
+get.person.group.training.status =
+  make.web.call.person.no.body(
+    .method = "get",
+    .parameters = c(persongroups, list(training = fake.arg)))
+
+list.person.groups =
+  make.web.call.person.no.body(
+    .method = "get",
+    .parameters = list(persongroups = fake.arg))
+
+train.person.group =
+  make.web.call.person.no.body(
+    .method = "post",
+    .parameters = c(persongroups, list(training = fake.arg)))
+
+update.person.group =
+  make.web.call.person.body(
+    .method = "patch",
+    .parameters = persongroups,
+    .body = c(name, userData))
