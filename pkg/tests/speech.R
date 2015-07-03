@@ -53,4 +53,9 @@ make.web.call(
     args$requestid = UUIDgenerate()
     args$instanceid = UUIDgenerate()
     args
-  })
+  })voice.synthesis =
+  make.web.call(
+    .method = "post",
+    .url = "https://speech.platform.bing.com/synthesize",
+    .parameters =
+  )
