@@ -1,10 +1,10 @@
 Package: webapi
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Support for creating an R API from a web API
 Version: 0.0.0
-Date: 2015-05-21
+Date: 2015-07-06
 Author: Revolution Analytics
-Description: More about what it does (maybe more than one line)
+Description: Create R functions from a description of each web API entry point
 License: Apache (== 2.0)
 Imports:httr, jsonlite, purrr
 Collate: make-web-call.R
