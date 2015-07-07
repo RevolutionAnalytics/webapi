@@ -89,7 +89,12 @@ make.web.call =
     .init = identity) {
     .method = get(toupper(match.arg(.method)), envir = environment(httr::POST))
     .param.encoding = match.arg(.param.encoding)
-    .response.encoding = match.arg(.response.encoding)
+    if(is.character(.response.encoding)){
+      .response.conversion = identity
+      .response.encoding = match.arg(.response.encoding)}
+    else {
+      .response.conversion = .response.encoding
+      .response.encoding = "text"}
     if(is.function(.body.encoding)){
       .body.conversion = .body.encoding
       .body.encoding = "multipart"}
@@ -129,7 +134,7 @@ make.web.call =
           encode = .body.encoding)
       stop_for_status(req)
       warn_for_status(req)
-      content(req, .response.encoding)}
+      .response.conversion(content(req, .response.encoding))}
     formals(.web.call) =
       lapply(
         formal.args,
