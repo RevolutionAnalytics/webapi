@@ -39,6 +39,7 @@ The url for the API endpoint (can be extended in some instances by using other o
 }
   \item{.body.encoding}{How the body of the request is encoded. If one of "json", "multipart" or "form" and if \code{.body} is a named list, the corresponding encoding is used. If a function, that function will be used to encode \code{.body}. Use "multipart" to upload a file.
 }
+  \item{.response.encoding}{Hot the response to the http request is encoded. If one of "parsed", "text", "raw", pass the encoding to \code{httr::content}. In particular, the default, "parsed", chooses the encoding based on the response headers and covers a large variety of formats. If a function, the response contents are extracted as text and passed to this function. }
   \item{.init}{
 Transformation to apply to list of all arguments of the generated call, for instance late initialization or verifying contstraints. Returns the list of arguments.
 }
