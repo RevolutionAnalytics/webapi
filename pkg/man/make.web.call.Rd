@@ -37,7 +37,7 @@ The url for the API endpoint (can be extended in some instances by using other o
   \item{.body}{
   List of API body specs, created  with the function \code{arg.spec} or \code{a} for short. Use \code{httr::upload_file} as a value to upload a file.
 }
-  \item{.body.encoding}{How the body of the function is encoded. If one of "json", "multipart" or "form" and if \code{.body} is a named list, the corresponding encoding is used. If a function, that function will be used to encode \code{.body} Use "multipart" to upload a file.
+  \item{.body.encoding}{How the body of the request is encoded. If one of "json", "multipart" or "form" and if \code{.body} is a named list, the corresponding encoding is used. If a function, that function will be used to encode \code{.body}. Use "multipart" to upload a file.
 }
   \item{.init}{
 Transformation to apply to list of all arguments of the generated call, for instance late initialization or verifying contstraints. Returns the list of arguments.
