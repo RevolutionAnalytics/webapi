@@ -86,7 +86,8 @@ make.web.call =
     .body = NULL,
     .body.encoding = c("json", "form", "multipart"),
     .response.encoding = c("parsed", "text", "raw"),
-    .init = identity) {
+    .init = identity,
+    .rate.limit = NULL) {
     .method = get(toupper(match.arg(.method)), envir = environment(httr::POST))
     .param.encoding = match.arg(.param.encoding)
     if(is.character(.response.encoding)){
@@ -114,27 +115,34 @@ make.web.call =
             export
           else
             export(n)})
-    .web.call = function() {
-      args = arglist()
-      args = lapply(args, eval, envir = parent.frame())
-      args = .init(args)
-      if(.param.encoding == "path") {
-        .url =
-          paste(
-            .url,
-            path.encoding(arg.filler(.parameters, args)), sep = "/")}
-      req =
-        .method(
-          url = .url,
-          query =
-            if(.param.encoding == "query")
-              arg.filler(.parameters, args),
-          add_headers(unlist(arg.filler(.headers, args))),
-          body = .body.conversion(arg.filler(.body, args)),
-          encode = .body.encoding)
-      stop_for_status(req)
-      warn_for_status(req)
-      .response.conversion(content(req, .response.encoding))}
+    .web.call = (
+      function() {
+        last.call = Sys.time()
+        function() {
+          args = arglist()
+          args = lapply(args, eval, envir = parent.frame())
+          args = .init(args)
+          if(.param.encoding == "path") {
+            .url =
+              paste(
+                .url,
+                path.encoding(arg.filler(.parameters, args)), sep = "/")}
+          if(!is.null(.rate.limit)) {
+            elapsed = difftime(Sys.time(),  last.call, units = "secs")
+            Sys.sleep(max(1/.rate.limit - as.numeric(elapsed), 0))
+            last.call <<- Sys.time()}
+          req =
+            .method(
+              url = .url,
+              query =
+                if(.param.encoding == "query")
+                  arg.filler(.parameters, args),
+              add_headers(unlist(arg.filler(.headers, args))),
+              body = .body.conversion(arg.filler(.body, args)),
+              encode = .body.encoding)
+          stop_for_status(req)
+          warn_for_status(req)
+          .response.conversion(content(req, .response.encoding))}})()
     formals(.web.call) =
       lapply(
         formal.args,
