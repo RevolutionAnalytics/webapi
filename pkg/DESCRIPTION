@@ -8,4 +8,3 @@ Maintainer: Great A. Coder <info@revolutionanalytics.com>
 Description: Create R functions from a description of each web API entry point
 License: Apache (== 2.0)
 Imports:httr, jsonlite, purrr
-Collate: make-web-call.R
