@@ -87,7 +87,7 @@ make.web.call =
     .body.encoding = c("json", "form", "multipart"),
     .response.encoding = c("parsed", "text", "raw"),
     .init = identity,
-    .rate.limit = NULL) {
+    .policy = .policy()) {
     .method = get(toupper(match.arg(.method)), envir = environment(httr::POST))
     .param.encoding = match.arg(.param.encoding)
     if(is.character(.response.encoding)){
@@ -127,10 +127,7 @@ make.web.call =
               paste(
                 .url,
                 path.encoding(arg.filler(.parameters, args)), sep = "/")}
-          if(!is.null(.rate.limit)) {
-            elapsed = difftime(Sys.time(),  last.call, units = "secs")
-            Sys.sleep(max(1/.rate.limit - as.numeric(elapsed), 0))
-            last.call <<- Sys.time()}
+          enforce(.policy)
           req =
             .method(
               url = .url,
@@ -140,6 +137,7 @@ make.web.call =
               add_headers(unlist(arg.filler(.headers, args))),
               body = .body.conversion(arg.filler(.body, args)),
               encode = .body.encoding)
+          update(.policy)
           stop_for_status(req)
           warn_for_status(req)
           .response.conversion(content(req, .response.encoding))}})()
