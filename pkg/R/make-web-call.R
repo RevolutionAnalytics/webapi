@@ -87,7 +87,7 @@ make.web.call =
     .body.encoding = c("json", "form", "multipart"),
     .response.encoding = c("parsed", "text", "raw"),
     .init = identity,
-    .policy = .policy()) {
+    .policy = Policy()) {
     .method = get(toupper(match.arg(.method)), envir = environment(httr::POST))
     .param.encoding = match.arg(.param.encoding)
     if(is.character(.response.encoding)){
