@@ -16,7 +16,8 @@ make.web.call(
   .body,
   .body.encoding = c("json", "form", "multipart"),
   .response.encoding = c("parsed", "text", "raw"),
-  .init = identity)
+  .init = identity,
+  .policy = Policy())
 }
 \arguments{
   \item{.method}{
@@ -43,6 +44,7 @@ The url for the API endpoint (can be extended in some instances by using other o
   \item{.init}{
 Transformation to apply to list of all arguments of the generated call, for instance late initialization or verifying contstraints. Returns the list of arguments.
 }
+\item{.policy}{Policy object to contol access to web resource.}
 }
 \details{
 The idea is to take a detailed description of web api and turn into one or more R calls using this function. A web api is characterized by what goes in the URL, a fixed part and a variable part, then headers that open the http transfer of data and finally what goes in the body of the request. Since we'd like R users to specify values in whatever type is most appropriate, but how to represent that in an http request is dependent on the specific API, conversions and representations are an important aspect of a Web API, not only in R. At the argument by argument level, this is taken care of the by the \code{arg.spec} function. This call instead specifies all the other aspects of conversion or encoding, that is how to form the URL for the call (\code{.param.encoding}) and how to encode the body, which is specified with two arguments. With \code{.body} the user specifies a list of elements that should contribute to the body of a request, each of which can have its own conversion function. Then \code{body.conversion} is applied to this list. Finally, if the result of \code{.body.conversion} is character, it becomes directly the body of the request. If it is a list, it will be encoded using the method specified by \code{.body.encoding}. It's a multi step process that tries to take cover very disparate situations whereby the body can contain an additional series of options represented with json or binary sound or image data, and we'll be looking to streamline this part even further. Defaults have been selected to cover the most common cases.
