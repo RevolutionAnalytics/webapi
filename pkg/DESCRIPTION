@@ -4,6 +4,7 @@ Title: Support for creating an R API from a web API
 Version: 0.0.0
 Date: 2015-07-06
 Author: Revolution Analytics
+Maintainer: Great A. Coder <info@revolutionanalytics.com>
 Description: Create R functions from a description of each web API entry point
 License: Apache (== 2.0)
 Imports:httr, jsonlite, purrr
