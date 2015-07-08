@@ -7,7 +7,16 @@ Generate a R function call from a detailed description of a web API entry point.
 Mapping R calls to web API is a repetitive and error prone task. By using this function instead you take advantage an automatic, uniform and tested mapping between a web entry point and an R function call.
 }
 \usage{
-make.web.call(.method = c("get", "post", "put", "browse", "delete", "head"), .url, .parameters, .param.encoding = c("query", "path"), .headers, .body, .body.encoding = c("json", "form", "multipart"), .init = identity)
+make.web.call(
+  .method = c("get", "patch", "post", "put", "delete", "head"),
+  .url,
+  .parameters,
+  .param.encoding = c("query", "path"),
+  .headers,
+  .body,
+  .body.encoding = c("json", "form", "multipart"),
+  .response.encoding = c("parsed", "text", "raw"),
+  .init = identity)
 }
 \arguments{
   \item{.method}{

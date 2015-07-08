@@ -8,7 +8,13 @@ Function to define arguments for a web API call
 Allows to define each component of a web API call and to map it to an argument of an R call
 }
 \usage{
-arg.spec(default = NULL, type = class(default), mandatory = FALSE, validate = function(x) is.null(type) || class(x) \%in\% type, conversion = as.character, export = identity)
+arg.spec(
+  default = NULL,
+  type = class(default),
+  mandatory = FALSE,
+  validate = function(x) is.null(type) || class(x) \%in\% type,
+  conversion = as.character,
+  export = identity)
 }
 \arguments{
   \item{default}{
