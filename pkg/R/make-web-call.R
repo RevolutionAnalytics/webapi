@@ -87,6 +87,7 @@ make.web.call =
     .body.encoding = c("json", "form", "multipart"),
     .response.encoding = c("parsed", "text", "raw"),
     .init = identity,
+    .skip.on.error = FALSE,
     .policy = Policy()) {
     .method = get(toupper(match.arg(.method)), envir = environment(httr::POST))
     .param.encoding = match.arg(.param.encoding)
@@ -138,7 +139,11 @@ make.web.call =
               body = .body.conversion(arg.filler(.body, args)),
               encode = .body.encoding)
           update(.policy)
-          stop_for_status(req)
+          if(req$status_code != 200) {
+            if(.skip.on.error)
+              return(TRUE)
+            else
+              stop(http_condition(req, "error", call = sys.call()), content(req, as = "text"))}
           warn_for_status(req)
           .response.conversion(content(req, .response.encoding))}})()
     formals(.web.call) =
