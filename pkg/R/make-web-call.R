@@ -140,8 +140,9 @@ make.web.call =
               encode = .body.encoding)
           update(.policy)
           if(req$status_code != 200) {
-            if(.skip.on.error)
-              return(TRUE)
+            if(.skip.on.error) {
+              warn_for_status(req)
+              return(NULL)}
             else
               stop(http_condition(req, "error", call = sys.call()), content(req, as = "text"))}
           warn_for_status(req)
