@@ -17,7 +17,7 @@ arg.spec =
   function(
     default = NULL,
     type = class(default),
-    mandatory = FALSE,
+    mandatory = is.null(default),
     validate = function(x) is.null(type) || class(x) %in% type,
     conversion = as.character,
     export = identity) {
@@ -75,6 +75,17 @@ path.encoding =
   function(arglist)
     paste(names(arglist), arglist, sep = "/", collapse = "/")
 
+interpylate =
+  function(template)
+    function(args) {
+      template = strsplit(x = template, split = "[{}]")[[1]]
+      paste(
+        ifelse(
+          1:length(template)%%2 == 1,
+          template,
+          args[template]),
+        collapse = "")}
+
 make.web.call =
   function(
     .method =
@@ -90,7 +101,7 @@ make.web.call =
     .skip.on.error = FALSE,
     .policy = Policy()) {
     .method = get(toupper(match.arg(.method)), envir = environment(httr::POST))
-    .param.encoding = match.arg(.param.encoding)
+    if(is.character(.param.encoding)) .param.encoding = match.arg(.param.encoding)
     if(is.character(.response.encoding)){
       .response.conversion = identity
       .response.encoding = match.arg(.response.encoding)}
@@ -123,21 +134,33 @@ make.web.call =
           args = arglist()
           args = lapply(args, eval, envir = parent.frame())
           args = .init(args)
-          if(.param.encoding == "path") {
+          if(is.function(.param.encoding)){
             .url =
               paste(
                 .url,
-                path.encoding(arg.filler(.parameters, args)), sep = "/")}
+                .param.encoding(arg.filler(.parameters, args)), sep = "/")}
+          else {
+            if(.param.encoding == "path") {
+              .url =
+                paste(
+                  .url,
+                  path.encoding(arg.filler(.parameters, args)), sep = "/")}}
           enforce(.policy)
-          req =
-            .method(
+          arglist =
+            list(
               url = .url,
-              query =
-                if(.param.encoding == "query")
-                  arg.filler(.parameters, args),
               add_headers(unlist(arg.filler(.headers, args))),
               body = .body.conversion(arg.filler(.body, args)),
               encode = .body.encoding)
+          if (!is.null(.parameters) && length(.parameters) > 0)
+            arglist =
+            c(
+              arglist,
+              list(
+                query =
+                  if(identical(.param.encoding, "query"))
+                    arg.filler(.parameters, args)))
+          req = do.call(.method, arglist)
           update(.policy)
           if(req$status_code != 200) {
             if(.skip.on.error) {
