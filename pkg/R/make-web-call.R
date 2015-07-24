@@ -58,7 +58,7 @@ arg.filler =
                   sn$conversion(vals[[n1]])}}),
           names(spec)),
         is.null)
-    if(length(filled) == 0) NULL else filled}
+    if(length(filled) == 0) NULL else lapply(filled, curlEscape)}
 
 format.content.type =
   function(content.type) {

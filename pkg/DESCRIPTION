@@ -7,4 +7,4 @@ Author: Revolution Analytics
 Maintainer: Great A. Coder <info@revolutionanalytics.com>
 Description: Create R functions from a description of each web API entry point
 License: Apache (== 2.0)
-Imports:httr, jsonlite, purrr
+Imports:httr, jsonlite, purrr, RCurl
