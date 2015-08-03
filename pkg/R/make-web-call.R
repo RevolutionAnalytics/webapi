@@ -147,18 +147,15 @@ make.web.call =
                   path.encoding(arg.filler(.parameters, args)), sep = "/")}}
           enforce(.policy)
           arglist =
-            list(
-              url = .url,
-              add_headers(unlist(arg.filler(.headers, args))),
-              body = .body.conversion(arg.filler(.body, args)),
-              encode = .body.encoding)
-          if (!is.null(.parameters) && length(.parameters) > 0)
-            arglist =
             c(
-              arglist,
               list(
-                query =
-                  if(identical(.param.encoding, "query"))
+                url = .url,
+                add_headers(unlist(arg.filler(.headers, args))),
+                body = .body.conversion(arg.filler(.body, args)),
+                encode = .body.encoding),
+              if(identical(.param.encoding, "query"))
+                list(
+                  query =
                     arg.filler(.parameters, args)))
           req = do.call(.method, arglist)
           update(.policy)
