@@ -35,7 +35,7 @@ arglist =
     fa}
 
 arg.filler =
-  function(spec, vals){
+  function(spec, vals, encode){
     filled =
       discard(
         setNames(
@@ -58,7 +58,10 @@ arg.filler =
                   sn$conversion(vals[[n1]])}}),
           names(spec)),
         is.null)
-    if(length(filled) == 0) NULL else lapply(filled, curlEscape)}
+    if(length(filled) == 0) NULL
+    else {
+      if(encode) sapply(filled, curlEscape)
+      else filled }}
 
 format.content.type =
   function(content.type) {
@@ -92,7 +95,7 @@ make.web.call =
       c("get", "patch", "post", "put", "delete", "head"),
     .url,
     .parameters  = NULL,
-    .param.encoding = c("query", "path"),
+    .param.encoding = c("query", "path", "none"),
     .headers = NULL,
     .body = NULL,
     .body.encoding = c("json", "form", "multipart"),
@@ -134,29 +137,25 @@ make.web.call =
           args = arglist()
           args = lapply(args, eval, envir = parent.frame())
           args = .init(args)
+          if(is.character(.param.encoding) && .param.encoding == "path")
+            .param.encoding = path.encoding
           if(is.function(.param.encoding)){
             .url =
               paste(
                 .url,
-                .param.encoding(arg.filler(.parameters, args)), sep = "/")}
-          else {
-            if(.param.encoding == "path") {
-              .url =
-                paste(
-                  .url,
-                  path.encoding(arg.filler(.parameters, args)), sep = "/")}}
+                .param.encoding(arg.filler(.parameters, args, TRUE)), sep = "/")}
           enforce(.policy)
           arglist =
             c(
               list(
                 url = .url,
-                add_headers(unlist(arg.filler(.headers, args))),
-                body = .body.conversion(arg.filler(.body, args)),
+                add_headers(unlist(arg.filler(.headers, args, FALSE))),
+                body = .body.conversion(arg.filler(.body, args, FALSE)),
                 encode = .body.encoding),
               if(identical(.param.encoding, "query"))
                 list(
                   query =
-                    arg.filler(.parameters, args)))
+                    arg.filler(.parameters, args, TRUE)))
           req = do.call(.method, arglist)
           update(.policy)
           if(req$status_code != 200) {
