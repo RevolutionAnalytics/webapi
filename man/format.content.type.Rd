@@ -10,9 +10,7 @@ Implements the typical encoding for \code{Content-type}, which is semicolon sepa
 format.content.type(content.type)
 }
 \arguments{
-  \item{content.type}{
-Description of content type as a list
-}
+  \item{content.type}{Description of content type as a list}
 }
 \details{
 This function should only be used as a conversion argument when specifyng the \code{Content-type} header.
@@ -21,5 +19,3 @@ This function should only be used as a conversion argument when specifyng the \c
 A formatted \code{Content-type} string.
 }
 
-\examples{
-}

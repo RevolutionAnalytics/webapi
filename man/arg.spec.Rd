@@ -42,5 +42,3 @@ Used exclusively to define arguments to the function \code{make.web.call}
 \value{
 A list containing the information needed by \code{make.web.call}
 }
-\examples{
-}
