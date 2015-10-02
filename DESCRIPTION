@@ -2,11 +2,11 @@ Package: webapi
 Type: Package
 Title: Support for Creating an R API From a Web API
 Description: Create R functions from a description of each web API entry point.
-Version: 0.0.0
+Version: 0.0.1
 Date: 2015-09-04
 Authors@R: c(person("Andrie", "de Vries", email = "adevries@microsoft.com", role = c("aut", "cre")),
   person("Antonio", "Piccolboni", role = "aut"))
 Maintainer: Andrie de Vries <adevries@microsoft.com>
 License: MIT + file LICENSE
 Copyright: Microsoft Corporation
-Imports:httr, jsonlite, purrr, RCurl
+Imports:httr, jsonlite, RCurl

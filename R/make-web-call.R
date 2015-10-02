@@ -71,7 +71,7 @@ arglist =
 arg.filler =
   function(spec, vals, encode){
     filled =
-      discard(
+#      discard(
         setNames(
           lapply(
             names(spec),
@@ -90,8 +90,9 @@ arg.filler =
                   sn$conversion(sn$default)
                 else
                   sn$conversion(vals[[n1]])}}),
-          names(spec)),
-        is.null)
+          names(spec))  #### ,
+#        is.null)
+    filled = filled[!is.null(filled)]
     if(length(filled) == 0) NULL
     else {
       if(encode) sapply(filled, curlEscape)
@@ -119,6 +120,7 @@ format.content.type =
       pattern = "^=",
       replacement = "",
       x = paste(names(content.type), tolower(x), sep = "=", collapse = ";"))}
+## XXXX               ^^^^^^^^^^^^  content.type is not defined?
 
 applyval =
   function(ll, frame)
@@ -214,7 +216,10 @@ make.web.call =
     .parameters = applyval(.parameters, parent.frame())
     .headers = applyval(.headers, parent.frame())
     .body = applyval(.body, parent.frame())
-    formal.args = discard(c(.parameters, .headers, .body), ~is.null(.$export))
+#    formal.args = discard(c(.parameters, .headers, .body), ~is.null(.$export))
+    formal.args = c(.parameters, .headers, .body)
+    formal.args = formal.args[vapply(formal.args, function(z) !is.null(z$export),TRUE)]
+# XXX shouldn't there be a check here for NULL formal.args after this?
     names(formal.args) =
       sapply(
         names(formal.args),
