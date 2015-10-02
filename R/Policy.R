@@ -21,9 +21,12 @@
 # THE SOFTWARE.
 
 
+# Adapted for new (>=R-3.2.x) or old behavior of list2env...
 Policy =
   function(...) {
-    ne = list2env(list(...))
+    l = list(...)
+    if(length(l)==0) ne = new.env()
+    else ne = list2env(l)
     structure(ne, class = "Policy")}
 
 
